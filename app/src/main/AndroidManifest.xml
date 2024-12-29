@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.example.chatgf">
 
     <application
         android:allowBackup="true"
@@ -12,15 +14,25 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ChatGF"
         tools:targetApi="31">
+
+        <!-- 1. 將 HomeActivity 設為啟動 Activity (Launcher) -->
         <activity
-            android:name=".MainActivity"
+            android:name=".HomeActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-    </application>
 
+        <!-- 2. 若需要顯示/啟動 ChatActivity，也可在這裡宣告。
+             android:exported 建議視情況設定，若只在 App 內部呼叫，可設 false。 -->
+        <activity
+            android:name=".ChatActivity"
+            android:exported="false" />
+
+        <!-- 其餘程式檔案 (Message.kt, ChatAdapter.kt, OpenAIManager.kt) 不用在這裡宣告，
+             因為它們不是 Activity、Service、Receiver 或 Provider。 -->
+
+    </application>
 </manifest>
