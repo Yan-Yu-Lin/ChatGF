@@ -4,6 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.chatgf">
 
+    <!-- 加入網路存取權限，否則無法進行 HTTP/HTTPS 請求 -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -15,7 +18,7 @@
         android:theme="@style/Theme.ChatGF"
         tools:targetApi="31">
 
-        <!-- 1. 將 HomeActivity 設為啟動 Activity (Launcher) -->
+        <!-- 設定 HomeActivity 為啟動 (Launcher) Activity -->
         <activity
             android:name=".HomeActivity"
             android:exported="true">
@@ -25,14 +28,13 @@
             </intent-filter>
         </activity>
 
-        <!-- 2. 若需要顯示/啟動 ChatActivity，也可在這裡宣告。
-             android:exported 建議視情況設定，若只在 App 內部呼叫，可設 false。 -->
+        <!-- ChatActivity 僅在 App 內部呼叫，可設 exported="false" -->
         <activity
             android:name=".ChatActivity"
             android:exported="false" />
 
-        <!-- 其餘程式檔案 (Message.kt, ChatAdapter.kt, OpenAIManager.kt) 不用在這裡宣告，
-             因為它們不是 Activity、Service、Receiver 或 Provider。 -->
+        <!-- 其餘檔案 (Message.kt、ChatAdapter.kt、OpenAIManager.kt 等)
+             不需在 Manifest 裡宣告，因為不是 Activity/Service/Receiver/Provider。 -->
 
     </application>
 </manifest>

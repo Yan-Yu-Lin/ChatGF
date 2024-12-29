@@ -15,7 +15,7 @@ class ChatActivity : AppCompatActivity() {
     private val messages: MutableList<Message> = mutableListOf()
 
     // 這裡初始化你的 manager，傳入 API Key（實務上不要把 key 寫死在程式裡喔）
-    private val openAIManager = OpenAIManager("YOUR_API_KEY")
+    private val openAIManager = OpenAIManager("")
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var inputEditText: EditText

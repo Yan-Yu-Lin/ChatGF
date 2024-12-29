@@ -63,20 +63,16 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
-    // -----------------------------
-    // 以下是新加的部分
-    // -----------------------------
+    // 1. 引入 openai-client-bom
+    implementation(platform("com.aallam.openai:openai-client-bom:3.8.2"))
 
-    // (1) 協程 (Coroutines)
-    // 若你的 libs.versions.toml 沒有管理 coroutines，可以直接加版本號
+    // 2. 加入 openai-client (不指定版本，讓 BOM 幫你管理)
+    implementation("com.aallam.openai:openai-client")
+
+    // 3. 指定 ktor engine (OkHttp)
+    runtimeOnly("io.ktor:ktor-client-okhttp")
+
+    // (可選) 如果需要協程
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
-
-    // (2) OpenAI Kotlin Client
-    implementation("com.aallam.openai:openai-client:3.8.2")
-
-    // (3) Ktor Engine (OkHttp) - 供 openai-client 底層做網路請求
-    runtimeOnly("io.ktor:ktor-client-okhttp:3.0.2")
-
-    // 如果你不想指定 Ktor 版本，也可用 BOM，但這樣要調整方式。
-    // 這邊用最簡單、直覺的方式即可。
+    // ...
 }
