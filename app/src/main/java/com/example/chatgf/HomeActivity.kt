@@ -7,6 +7,8 @@ import android.os.Bundle
 import android.widget.Button
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import android.widget.Toast
+
 
 class HomeActivity : AppCompatActivity() {
 
@@ -25,8 +27,12 @@ class HomeActivity : AppCompatActivity() {
             val chatHistoryManager = ChatHistoryManager(this)
             val histories = chatHistoryManager.getAllChats()
 
-            // 顯示歷史對話列表
-            showHistoryDialog(histories)
+            if (histories.isEmpty()) {
+                Toast.makeText(this, "沒有紀錄，請開始新對話", Toast.LENGTH_SHORT).show()
+            } else {
+                // 顯示歷史對話列表
+                showHistoryDialog(histories)
+            }
         }
     }
 
