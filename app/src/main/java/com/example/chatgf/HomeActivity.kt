@@ -1,9 +1,12 @@
 package com.example.chatgf
 
+import android.app.Dialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 
 class HomeActivity : AppCompatActivity() {
 
@@ -14,19 +17,43 @@ class HomeActivity : AppCompatActivity() {
         val btnNewChat = findViewById<Button>(R.id.btnNewChat)
         val btnContinue = findViewById<Button>(R.id.btnContinueChat)
 
-        // 「開始新對話」：跳到聊天頁面，但對話紀錄清空或不帶任何舊資料
         btnNewChat.setOnClickListener {
-            val intent = Intent(this, ChatActivity::class.java)
-            // 這邊若要做「新對話」區分，就可以加一些 flag 或 extra
-            startActivity(intent)
+            startActivity(Intent(this, ChatActivity::class.java))
         }
 
-        // 「繼續對話」：若有儲存對話紀錄，可帶著舊紀錄到聊天頁面
         btnContinue.setOnClickListener {
-            val intent = Intent(this, ChatActivity::class.java)
-            // 例如把舊紀錄的 key 傳過去
-            // intent.putExtra("CHAT_HISTORY_KEY", someData)
-            startActivity(intent)
+            val chatHistoryManager = ChatHistoryManager(this)
+            val histories = chatHistoryManager.getAllChats()
+
+            // 顯示歷史對話列表
+            showHistoryDialog(histories)
         }
+    }
+
+    private fun showHistoryDialog(histories: List<ChatHistory>) {
+        val dialog = Dialog(this)
+        dialog.setContentView(R.layout.fragment_chat_history)
+
+        val recyclerView = dialog.findViewById<RecyclerView>(R.id.rvChatHistory)
+        recyclerView.layoutManager = LinearLayoutManager(this)
+
+        val adapter = ChatHistoryAdapter(
+            histories = histories,
+            onHistoryClick = { history ->
+                val intent = Intent(this, ChatActivity::class.java)
+                intent.putExtra(EXTRA_CHAT_ID, history.id)
+                startActivity(intent)
+                dialog.dismiss()
+            },
+            onDeleteClick = { history ->
+                ChatHistoryManager(this).deleteChat(history.id)
+                // 重新載入列表
+                dialog.dismiss()
+                showHistoryDialog(ChatHistoryManager(this).getAllChats())
+            }
+        )
+
+        recyclerView.adapter = adapter
+        dialog.show()
     }
 }

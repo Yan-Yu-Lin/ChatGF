@@ -24,7 +24,7 @@ android {
         properties.load(keystoreFile.inputStream())
 
         //return empty key in case something goes wrong
-        val API_KEY = properties.getProperty("API_KEY") ?: ""
+        val api_key = properties.getProperty("API_KEY") ?: ""
 
         buildFeatures {
             buildConfig = true
@@ -33,7 +33,7 @@ android {
         buildConfigField(
             "String",
             "API_KEY",
-            "\"$API_KEY\""
+            "\"$api_key\""
         )
     }
 
@@ -83,5 +83,7 @@ dependencies {
 
     // (可選) 如果需要協程
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
-    // ...
+
+    implementation("com.google.code.gson:gson:2.10.1")
+    implementation("androidx.recyclerview:recyclerview:1.3.2")
 }
