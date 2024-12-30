@@ -22,6 +22,7 @@ class ChatActivity : AppCompatActivity() {
     private val openAIManager = OpenAIManager(API_KEY)
 
     private lateinit var chatHistoryManager: ChatHistoryManager
+    private var currentChatId: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,6 +59,7 @@ class ChatActivity : AppCompatActivity() {
 
         // 如果是從歷史記錄進來的，載入歷史訊息
         intent.getStringExtra(EXTRA_CHAT_ID)?.let { chatId ->
+            currentChatId = chatId // 保存當前對話ID
             chatHistoryManager.getChatById(chatId)?.let { history ->
                 messages.addAll(history.messages)
                 adapter.notifyDataSetChanged()
@@ -109,7 +111,7 @@ class ChatActivity : AppCompatActivity() {
     override fun onPause() {
         super.onPause()
         if (messages.isNotEmpty()) {
-            chatHistoryManager.saveChat(messages)
+            chatHistoryManager.saveChat(messages, currentChatId)
         }
     }
 

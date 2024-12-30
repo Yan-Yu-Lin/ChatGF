@@ -1,17 +1,19 @@
 package com.example.chatgf
-
 import android.content.Context
 import com.google.gson.Gson
-
+import java.util.UUID
 
 class ChatHistoryManager(context: Context) {
     private val sharedPreferences = context.getSharedPreferences("chat_histories", Context.MODE_PRIVATE)
     private val gson = Gson()
 
-    fun saveChat(messages: List<Message>) {
+    fun saveChat(messages: List<Message>, existingChatId: String? = null) {
         if (messages.isEmpty()) return
 
+        val chatId = existingChatId ?: UUID.randomUUID().toString()
+
         val history = ChatHistory(
+            id = chatId, // 使用現有ID或創建新ID
             title = messages.firstOrNull { it.role == "user" }?.content?.take(20) ?: "New Chat",
             lastMessage = messages.last().content.take(50),
             timestamp = System.currentTimeMillis(),
@@ -19,7 +21,7 @@ class ChatHistoryManager(context: Context) {
         )
 
         val historyJson = gson.toJson(history)
-        sharedPreferences.edit().putString(history.id, historyJson).apply()
+        sharedPreferences.edit().putString(chatId, historyJson).apply()
     }
 
     fun getAllChats(): List<ChatHistory> {
