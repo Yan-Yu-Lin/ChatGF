@@ -11,14 +11,18 @@ import com.aallam.openai.api.chat.ChatMessage
 import com.aallam.openai.api.chat.ChatRole
 import kotlinx.coroutines.launch
 
+public val EXTRA_CHAT_ID = "chat_id"
+
 class ChatActivity : AppCompatActivity() {
 
     private lateinit var adapter: ChatAdapter
     private val messages: MutableList<Message> = mutableListOf()
 
-    // 這裡可以先硬編碼 Key，或用更安全的方式存放
     val API_KEY = BuildConfig.API_KEY
     private val openAIManager = OpenAIManager(API_KEY)
+
+    private lateinit var chatHistoryManager: ChatHistoryManager
+    private var currentChatId: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,6 +54,17 @@ class ChatActivity : AppCompatActivity() {
                 getChatGPTReply()
             }
         }
+
+        chatHistoryManager = ChatHistoryManager(this)
+
+        // 如果是從歷史記錄進來的，載入歷史訊息
+        intent.getStringExtra(EXTRA_CHAT_ID)?.let { chatId ->
+            currentChatId = chatId // 保存當前對話ID
+            chatHistoryManager.getChatById(chatId)?.let { history ->
+                messages.addAll(history.messages)
+                adapter.notifyDataSetChanged()
+            }
+        }
     }
 
     /**
@@ -58,13 +73,13 @@ class ChatActivity : AppCompatActivity() {
     private fun getChatGPTReply() {
         lifecycleScope.launch {
             try {
-                // a) 轉成 openAiMessages (List<ChatMessage>)
+                // 轉成 openAiMessages (List<ChatMessage>)
                 val openAiMessages = convertToOpenAIMessages(messages)
 
-                // b) 呼叫 API 取得回覆
+                // 呼叫 API 取得回覆
                 val responseText = openAIManager.getChatResponse(openAiMessages)
 
-                // c) 將 AI 回覆加入本地對話紀錄 (role = "assistant")
+                // 將 AI 回覆加入本地對話紀錄 (role = "assistant")
                 messages.add(Message(role = "assistant", content = responseText))
                 adapter.notifyItemInserted(messages.size - 1)
 
@@ -91,4 +106,14 @@ class ChatActivity : AppCompatActivity() {
             ChatMessage(role = chatRole, content = msg.content)
         }
     }
+
+    // 在離開活動時儲存對話
+    override fun onPause() {
+        super.onPause()
+        if (messages.isNotEmpty()) {
+            chatHistoryManager.saveChat(messages, currentChatId)
+        }
+    }
+
+
 }
