@@ -17,7 +17,8 @@ class ChatActivity : AppCompatActivity() {
     private val messages: MutableList<Message> = mutableListOf()
 
     // 這裡可以先硬編碼 Key，或用更安全的方式存放
-    private val openAIManager = OpenAIManager("")
+    val API_KEY = BuildConfig.API_KEY
+    private val openAIManager = OpenAIManager(API_KEY)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -1,5 +1,5 @@
 import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
-
+import java.util.Properties
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -18,6 +18,23 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        val keystoreFile = project.rootProject.file("local.properties")
+        val properties = Properties()
+        properties.load(keystoreFile.inputStream())
+
+        //return empty key in case something goes wrong
+        val API_KEY = properties.getProperty("API_KEY") ?: ""
+
+        buildFeatures {
+            buildConfig = true
+        }
+
+        buildConfigField(
+            "String",
+            "API_KEY",
+            "\"$API_KEY\""
+        )
     }
 
     buildTypes {
@@ -40,14 +57,6 @@ android {
         jvmTarget = "1.8"
     }
 
-//    defaultConfig {
-//        // 讀取 local.properties 中的 key，並寫入 BuildConfig
-//        val localProperties = gradleLocalProperties(rootDir)
-//        val openAiKey = localProperties.getProperty("OPENAI_API_KEY") ?: ""
-//
-//        // 定義一個字串常數 OPENAI_API_KEY 到 BuildConfig
-//        buildConfigField("String", "OPENAI_API_KEY", "\"$openAiKey\"")
-//    }
 }
 
 dependencies {
