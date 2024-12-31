@@ -59,6 +59,7 @@ android {
 
 }
 
+
 dependencies {
 
     // 你原本的 dependencies (依你提供的 libs.* 為準)
@@ -67,6 +68,8 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
+    implementation("com.airbnb.android:lottie:5.2.0")
+
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
