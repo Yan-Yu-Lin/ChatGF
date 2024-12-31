@@ -13,6 +13,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.aallam.openai.api.chat.ChatMessage
 import com.aallam.openai.api.chat.ChatRole
 import kotlinx.coroutines.launch
+import androidx.recyclerview.widget.DividerItemDecoration
+import android.widget.Toast
 
 public val EXTRA_CHAT_ID = "chat_id"
 
@@ -97,6 +99,7 @@ class ChatActivity : AppCompatActivity() {
 
         // 設置漢堡選單點擊事件
         toolbar.setNavigationOnClickListener {
+            updateHistoryList() // 每次開啟選單時更新列表
             drawerLayout.openDrawer(GravityCompat.START)
         }
 
@@ -108,6 +111,7 @@ class ChatActivity : AppCompatActivity() {
         // 設置歷史對話列表
         val rvHistory = findViewById<RecyclerView>(R.id.rvChatHistoryInDrawer)
         rvHistory.layoutManager = LinearLayoutManager(this)
+        rvHistory.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
         updateHistoryList()
     }
 
@@ -136,7 +140,7 @@ class ChatActivity : AppCompatActivity() {
         val histories = chatHistoryManager.getAllChats()
         val rvHistory = findViewById<RecyclerView>(R.id.rvChatHistoryInDrawer)
 
-        val historyAdapter = ChatHistoryAdapter(
+        val historyAdapter = ChatHistoryDrawerAdapter(
             histories = histories,
             onHistoryClick = { history ->
                 switchToChat(history.id)
@@ -144,7 +148,7 @@ class ChatActivity : AppCompatActivity() {
             },
             onDeleteClick = { history ->
                 chatHistoryManager.deleteChat(history.id)
-                updateHistoryList()  // 重新載入列表
+                updateHistoryList()
                 if (history.id == currentChatId) {
                     startNewChat()
                 }
