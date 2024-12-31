@@ -1,15 +1,18 @@
 package com.example.chatgf
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
+import android.widget.RelativeLayout
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.aallam.openai.api.chat.ChatMessage
 import com.aallam.openai.api.chat.ChatRole
 import kotlinx.coroutines.launch
+import java.util.*
 
 public val EXTRA_CHAT_ID = "chat_id"
 
@@ -28,6 +31,19 @@ class ChatActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat)
 
+        // 1. 根據季節設置背景圖片
+        val season = getSeason()
+        val backgroundRes = when (season) {
+            "spring" -> R.drawable.spring  // spring.jpg
+            "summer" -> R.drawable.summer  // summer.jpg
+            "autumn" -> R.drawable.fall    // autumn.jpg
+            "winter" -> R.drawable.winter  // winter.jpg
+            else -> R.drawable.spring // 默認背景
+        }
+
+        val backgroundImageView = findViewById<ImageView>(R.id.backgroundImage)
+        backgroundImageView.setImageResource(backgroundRes)
+
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
         val inputEditText = findViewById<EditText>(R.id.editTextUserInput)
         val sendButton = findViewById<Button>(R.id.btnSend)
@@ -36,21 +52,16 @@ class ChatActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = adapter
 
-        // (可選) 加入 System role 引導 AI 的角色或風格
-        // messages.add(Message("system", "You are a helpful assistant..."))
+        // 其他初始化代碼...
 
         sendButton.setOnClickListener {
             val userInput = inputEditText.text.toString().trim()
             if (userInput.isNotEmpty()) {
-                // 1. 先把使用者訊息加進 messages
                 messages.add(Message(role = "user", content = userInput))
                 adapter.notifyItemInserted(messages.size - 1)
                 recyclerView.scrollToPosition(messages.size - 1)
 
-                // 2. 清空輸入框
                 inputEditText.setText("")
-
-                // 3. 呼叫 AI
                 getChatGPTReply()
             }
         }
@@ -67,9 +78,18 @@ class ChatActivity : AppCompatActivity() {
         }
     }
 
-    /**
-     * 核心：把「完整 messages」轉成 OpenAI ChatMessage 後，送到 API 做多輪對話。
-     */
+    // 根據當前月份判斷季節，並返回季節名稱
+    fun getSeason(): String {
+        val month = Calendar.getInstance().get(Calendar.MONTH) + 1 // 獲取當前月份，注意月份是從0開始的
+        return when (month) {
+            in 3..5 -> "spring"  // 春天 (3-5月)
+            in 6..8 -> "summer"  // 夏天 (6-8月)
+            in 9..11 -> "autumn" // 秋天 (9-11月)
+            else -> "winter"     // 冬天 (12月、1-2月)
+        }
+    }
+
+    // 核心：把「完整 messages」轉成 OpenAI ChatMessage 後，送到 API 做多輪對話。
     private fun getChatGPTReply() {
         lifecycleScope.launch {
             try {
@@ -91,10 +111,7 @@ class ChatActivity : AppCompatActivity() {
         }
     }
 
-    /**
-     * 將本地的 Message (UI) 轉成 OpenAI 的 ChatMessage。
-     * role: user / assistant / system -> ChatRole.User / ChatRole.Assistant / ChatRole.System
-     */
+    // 將本地的 Message (UI) 轉成 OpenAI 的 ChatMessage。
     private fun convertToOpenAIMessages(localMessages: List<Message>): List<ChatMessage> {
         return localMessages.map { msg ->
             val chatRole = when (msg.role) {
@@ -114,6 +131,4 @@ class ChatActivity : AppCompatActivity() {
             chatHistoryManager.saveChat(messages, currentChatId)
         }
     }
-
-
 }
