@@ -24,7 +24,7 @@ class OpenAIManager(apiKey: String) {
      */
     suspend fun getChatResponse(history: List<ChatMessage>): String {
         val request = ChatCompletionRequest(
-            model = ModelId("gpt-3.5-turbo"),
+            model = ModelId("chatgpt-4o-latest"),
             messages = history
         )
         val completion = openAI.chatCompletion(request)
