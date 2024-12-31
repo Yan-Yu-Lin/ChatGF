@@ -12,5 +12,6 @@
         android:layout_height="wrap_content"
         android:background="@android:color/holo_green_light"
         android:padding="8dp"
-        android:textColor="@android:color/white"/>
+        android:textColor="@android:color/white"
+        android:fontFamily="@font/chenyu"/>
 </LinearLayout>

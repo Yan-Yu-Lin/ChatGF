@@ -13,7 +13,12 @@
         android:id="@+id/btnNewChat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="開始新對話" />
+        android:text="開始新對話"
+        android:background="@drawable/button_gradient"
+        android:textColor="#FFFFFF"
+        android:fontFamily="@font/chenyu"
+        android:textSize="24sp"
+        android:layout_marginTop="32dp" />
 
     <!-- Lottie 動畫，放置於兩個按鈕之間 -->
     <com.airbnb.lottie.LottieAnimationView
@@ -32,6 +37,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="繼續對話"
-        android:layout_marginTop="16dp" />
+        android:background="@drawable/button_gradient"
+        android:textColor="#FFFFFF"
+        android:fontFamily="@font/chenyu"
+        android:textSize="24sp"
+        android:layout_marginTop="32dp" />
 
 </LinearLayout>
