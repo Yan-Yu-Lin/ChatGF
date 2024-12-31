@@ -32,6 +32,7 @@
             android:id="@+id/btnSend"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="送出" />
+            android:text="送出"
+            android:fontFamily="@font/chenyu"/>
     </LinearLayout>
 </LinearLayout>
