@@ -1,38 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
+
+    <!-- 設定背景圖片 -->
+    <ImageView
+        android:id="@+id/backgroundImage"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop" />
 
     <!-- 聊天紀錄的 RecyclerView -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1" />
-
-
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="16dp"
+        android:layout_above="@id/inputLayout" />
 
     <!-- 文字輸入框 + 送出按鈕 -->
     <LinearLayout
+        android:id="@+id/inputLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="8dp">
+        android:padding="8dp"
+        android:layout_alignParentBottom="true">
 
         <EditText
             android:id="@+id/editTextUserInput"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:hint="輸入訊息" />
+            android:hint="輸入訊息"
+            android:padding="8dp"
+            android:background="@drawable/edit_text_background" />
 
         <Button
             android:id="@+id/btnSend"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="送出"
-            android:fontFamily="@font/chenyu"/>
+            android:textColor="#FFFFFF"
+            android:fontFamily="@font/chenyu"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/rounded_button_background" />
     </LinearLayout>
-</LinearLayout>
+</RelativeLayout>
