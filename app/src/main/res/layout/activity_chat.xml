@@ -6,6 +6,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+    <ImageView
+            android:id="@+id/backgroundImage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop" />
+
     <!-- 主要內容 -->
     <LinearLayout
             android:layout_width="match_parent"
@@ -23,11 +29,14 @@
                 app:title="ChatGF" />
 
         <!-- 原有的聊天內容 -->
+        <!-- 聊天紀錄的 RecyclerView -->
         <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1" />
+                android:layout_alignParentTop="true"
+                android:layout_marginBottom="16dp"
+                android:layout_above="@id/inputLayout" />
 
         <LinearLayout
                 android:layout_width="match_parent"
@@ -40,13 +49,19 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:hint="輸入訊息" />
+                    android:hint="輸入訊息"
+                    android:padding="8dp"
+                    android:background="@drawable/edit_text_background" />
 
             <Button
                     android:id="@+id/btnSend"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="送出" />
+                    android:text="送出"
+                    android:textColor="#FFFFFF"
+                    android:fontFamily="@font/chenyu"
+                    android:layout_marginStart="8dp"
+                    android:background="@drawable/rounded_button_background" />
         </LinearLayout>
     </LinearLayout>
 
@@ -59,10 +74,12 @@
             android:background="@android:color/white">
 
         <LinearLayout
+                android:id="@+id/inputLayout"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:padding="8dp">
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="8dp"
+                android:layout_alignParentBottom="true">
 
             <Button
                     android:id="@+id/btnNewChatInDrawer"

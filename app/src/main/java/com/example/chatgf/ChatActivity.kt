@@ -1,6 +1,5 @@
 package com.example.chatgf
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
@@ -8,6 +7,9 @@ import android.widget.EditText
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import android.widget.ImageView
+import android.widget.RelativeLayout
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -17,6 +19,8 @@ import kotlinx.coroutines.launch
 import androidx.recyclerview.widget.DividerItemDecoration
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import java.util.Calendar
+
 
 public val EXTRA_CHAT_ID = "chat_id"
 
@@ -34,6 +38,17 @@ class ChatActivity : AppCompatActivity() {
         setContentView(R.layout.activity_chat)
 
         Log.d("ChatActivity", "ChatActivity started")
+
+        // 1. 根據季節設置背景圖片
+        val season = getSeason()
+        val backgroundRes = when (season) {
+            "spring" -> R.drawable.spring  // spring.jpg
+            "summer" -> R.drawable.summer  // summer.jpg
+            "autumn" -> R.drawable.fall    // autumn.jpg
+            "winter" -> R.drawable.winter  // winter.jpg
+            else -> R.drawable.spring // 默認背景
+        }
+
 
         // 1. 優先初始化 chatHistoryManager
         chatHistoryManager = ChatHistoryManager(this)
@@ -200,10 +215,23 @@ class ChatActivity : AppCompatActivity() {
         }
     }
 
+
     /**
      * 核心：把「完整 messages」轉成 OpenAI ChatMessage 後，送到 API 做多輪對話。
      */
 
+    // 根據當前月份判斷季節，並返回季節名稱
+    fun getSeason(): String {
+        val month = Calendar.getInstance().get(Calendar.MONTH) + 1 // 獲取當前月份，注意月份是從0開始的
+        return when (month) {
+            in 3..5 -> "spring"  // 春天 (3-5月)
+            in 6..8 -> "summer"  // 夏天 (6-8月)
+            in 9..11 -> "autumn" // 秋天 (9-11月)
+            else -> "winter"     // 冬天 (12月、1-2月)
+        }
+    }
+
+    // 核心：把「完整 messages」轉成 OpenAI ChatMessage 後，送到 API 做多輪對話。
     private fun getChatGPTReply() {
         lifecycleScope.launch {
             try {
@@ -220,6 +248,7 @@ class ChatActivity : AppCompatActivity() {
             }
         }
     }
+
 
     /**
      * Convert all messages (including system!) to OpenAI's ChatMessage
