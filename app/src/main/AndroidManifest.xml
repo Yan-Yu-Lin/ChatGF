@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.chatgf">
-
     <!-- 加入網路存取權限，否則無法進行 HTTP/HTTPS 請求 -->
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -17,24 +15,26 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ChatGF"
         tools:targetApi="31">
-
-        <!-- 設定 HomeActivity 為啟動 (Launcher) Activity -->
         <activity
-            android:name=".HomeActivity"
-            android:exported="true">
+            android:name=".loading"
+            android:exported="false" />
+        <!-- StartActivity 設為啟動畫面 -->
+        <activity
+            android:name=".Start"
+            android:exported="true"
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-
-        <!-- ChatActivity 僅在 App 內部呼叫，可設 exported="false" -->
+        </activity> <!-- HomeActivity 是主頁 -->
+        <activity
+            android:name=".HomeActivity"
+            android:exported="true" /> <!-- ChatActivity 僅在應用內部呼叫 -->
         <activity
             android:name=".ChatActivity"
             android:exported="false" />
-
-        <!-- 其餘檔案 (Message.kt、ChatAdapter.kt、OpenAIManager.kt 等)
-             不需在 Manifest 裡宣告，因為不是 Activity/Service/Receiver/Provider。 -->
-
     </application>
+
 </manifest>

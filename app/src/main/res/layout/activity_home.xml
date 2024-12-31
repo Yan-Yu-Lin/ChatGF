@@ -1,18 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
     android:padding="16dp">
 
+    <!-- 開始新對話按鈕 -->
     <Button
         android:id="@+id/btnNewChat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="開始新對話" />
 
+    <!-- Lottie 動畫，放置於兩個按鈕之間 -->
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/homepageAnimation"
+        android:layout_width="255dp"
+        android:layout_height="225dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="24dp"
+        app:lottie_autoPlay="true"
+        app:lottie_rawRes="@raw/homepage_anime"
+        app:lottie_loop="true" />
+
+    <!-- 繼續對話按鈕 -->
     <Button
         android:id="@+id/btnContinueChat"
         android:layout_width="wrap_content"

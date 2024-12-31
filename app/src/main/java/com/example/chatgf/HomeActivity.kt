@@ -2,25 +2,26 @@ package com.example.chatgf
 
 import android.app.Dialog
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import android.widget.Toast
-
+import com.airbnb.lottie.LottieAnimationView
 
 class HomeActivity : AppCompatActivity() {
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
+
         val btnNewChat = findViewById<Button>(R.id.btnNewChat)
         val btnContinue = findViewById<Button>(R.id.btnContinueChat)
 
+
         btnNewChat.setOnClickListener {
-            startActivity(Intent(this, ChatActivity::class.java))
+            showLoadingAnimation("newConversation")
         }
 
         btnContinue.setOnClickListener {
@@ -30,7 +31,6 @@ class HomeActivity : AppCompatActivity() {
             if (histories.isEmpty()) {
                 Toast.makeText(this, "沒有紀錄，請開始新對話", Toast.LENGTH_SHORT).show()
             } else {
-                // 顯示歷史對話列表
                 showHistoryDialog(histories)
             }
         }
@@ -46,14 +46,10 @@ class HomeActivity : AppCompatActivity() {
         val adapter = ChatHistoryAdapter(
             histories = histories,
             onHistoryClick = { history ->
-                val intent = Intent(this, ChatActivity::class.java)
-                intent.putExtra(EXTRA_CHAT_ID, history.id)
-                startActivity(intent)
-                dialog.dismiss()
+                showLoadingAnimation("continueConversation", history.id)
             },
             onDeleteClick = { history ->
                 ChatHistoryManager(this).deleteChat(history.id)
-                // 重新載入列表
                 dialog.dismiss()
                 showHistoryDialog(ChatHistoryManager(this).getAllChats())
             }
@@ -61,5 +57,12 @@ class HomeActivity : AppCompatActivity() {
 
         recyclerView.adapter = adapter
         dialog.show()
+    }
+
+    private fun showLoadingAnimation(targetActivity: String, chatId: String? = null) {
+        val loadingIntent = Intent(this, loading::class.java)
+        loadingIntent.putExtra("target_activity", targetActivity)
+        loadingIntent.putExtra("chat_id", chatId)
+        startActivity(loadingIntent)
     }
 }
