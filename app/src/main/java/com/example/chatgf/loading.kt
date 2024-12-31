@@ -1,14 +1,11 @@
 package com.example.chatgf
 
-import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.lottie.LottieAnimationView
 
 class loading : AppCompatActivity() {
@@ -18,31 +15,39 @@ class loading : AppCompatActivity() {
         setContentView(R.layout.activity_loading)
 
         val lottieAnimationView = findViewById<LottieAnimationView>(R.id.lottieAnimationView)
-        lottieAnimationView.playAnimation()  // 播放加載動畫
+        lottieAnimationView.playAnimation() // 播放加載動畫
 
-        // 假設加載動畫持續 2 秒鐘，之後跳轉到對應頁面
         Handler(Looper.getMainLooper()).postDelayed({
-            // 根據目標頁面選擇跳轉
             val targetActivity = intent.getStringExtra("target_activity")
-            val chatId = intent.getStringExtra("chat_id") // 獲取對話ID
+            val chatId = intent.getStringExtra("chat_id")
 
             when (targetActivity) {
                 "newConversation" -> navigateToNewConversation()
                 "continueConversation" -> navigateToContinueConversation(chatId)
+                else -> {
+                    Toast.makeText(this, "未知的目標頁面", Toast.LENGTH_SHORT).show()
+                    finish()
+                }
             }
-        }, 5000) // 2秒後跳轉
+        }, 5000) // 5秒後跳轉
     }
 
     private fun navigateToNewConversation() {
-        startActivity(Intent(this, ChatActivity::class.java))
+        // Pass along girlfriend type (if any)
+        val gfTypeName = intent.getStringExtra("EXTRA_GIRLFRIEND_TYPE")
+
+        val chatIntent = Intent(this, ChatActivity::class.java)
+        gfTypeName?.let {
+            chatIntent.putExtra("EXTRA_GIRLFRIEND_TYPE", it)
+        }
+        startActivity(chatIntent)
         finish()
     }
 
     private fun navigateToContinueConversation(chatId: String?) {
-        // 確保 chatId 存在
         if (chatId != null) {
             val intent = Intent(this, ChatActivity::class.java)
-            intent.putExtra(EXTRA_CHAT_ID, chatId)  // 傳遞選中的對話ID
+            intent.putExtra(EXTRA_CHAT_ID, chatId)
             startActivity(intent)
             finish()
         } else {
@@ -50,5 +55,4 @@ class loading : AppCompatActivity() {
             finish()
         }
     }
-
 }

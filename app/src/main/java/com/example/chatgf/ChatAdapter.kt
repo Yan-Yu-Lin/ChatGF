@@ -6,20 +6,35 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class ChatAdapter(private val messages: List<Message>) :
-    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class ChatAdapter(
+    // Keep reference to the original messages list (the same one used in ChatActivity).
+    private val messages: List<Message>
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    // 先分兩種 ViewType：User / Assistant
+    // We only skip "system" at display time
     companion object {
         private const val VIEW_TYPE_USER = 1
         private const val VIEW_TYPE_ASSISTANT = 2
     }
 
+    /**
+     * For convenience, let's define a helper to get the "filtered" list each time.
+     */
+    private fun getFilteredList(): List<Message> {
+        return messages.filter { it.role != "system" }
+    }
+
+    override fun getItemCount(): Int {
+        // Re-filter every time, so new user/assistant messages are included
+        return getFilteredList().size
+    }
+
     override fun getItemViewType(position: Int): Int {
-        return when (messages[position].role) {
-            "user" -> VIEW_TYPE_USER
+        val filtered = getFilteredList()
+        val message = filtered[position]
+        return when (message.role) {
             "assistant" -> VIEW_TYPE_ASSISTANT
-            else -> VIEW_TYPE_USER  // 其他角色先預設 user
+            else -> VIEW_TYPE_USER // user or any other role
         }
     }
 
@@ -36,7 +51,8 @@ class ChatAdapter(private val messages: List<Message>) :
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val message = messages[position]
+        val filtered = getFilteredList()
+        val message = filtered[position]
         if (holder is UserViewHolder) {
             holder.bind(message)
         } else if (holder is AssistantViewHolder) {
@@ -44,9 +60,7 @@ class ChatAdapter(private val messages: List<Message>) :
         }
     }
 
-    override fun getItemCount(): Int = messages.size
-
-    // 使用者訊息的 ViewHolder
+    // User bubble
     inner class UserViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val tvMessage = itemView.findViewById<TextView>(R.id.tvUserMessage)
         fun bind(message: Message) {
@@ -54,7 +68,7 @@ class ChatAdapter(private val messages: List<Message>) :
         }
     }
 
-    // 機器人訊息的 ViewHolder
+    // Assistant bubble
     inner class AssistantViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val tvMessage = itemView.findViewById<TextView>(R.id.tvAssistantMessage)
         fun bind(message: Message) {

@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 class HomeActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
@@ -18,10 +19,12 @@ class HomeActivity : AppCompatActivity() {
         val btnNewChat = findViewById<Button>(R.id.btnNewChat)
         val btnContinue = findViewById<Button>(R.id.btnContinueChat)
 
-        // 「開始新對話」：顯示選擇女友類型的清單
-        btnNewChat.setOnClickListener { showGirlfriendSelectionDialog() }
+        // 「開始新對話」
+        btnNewChat.setOnClickListener {
+            showGirlfriendSelectionDialog()
+        }
 
-        // 「繼續對話」：載入歷史紀錄並顯示
+        // 「繼續對話」
         btnContinue.setOnClickListener {
             val chatHistoryManager = ChatHistoryManager(this)
             val histories = chatHistoryManager.getAllChats()
@@ -35,49 +38,52 @@ class HomeActivity : AppCompatActivity() {
 
     /** 顯示選擇女友的對話框 */
     private fun showGirlfriendSelectionDialog() {
-        val gfTypes =
-                listOf(
-                        GirlfriendType.GIRL_1,
-                        GirlfriendType.GIRL_2,
-                        GirlfriendType.GIRL_3,
-                        GirlfriendType.RANDOM
-                )
-
+        val gfTypes = listOf(
+            GirlfriendType.GIRL_1,
+            GirlfriendType.GIRL_2,
+            GirlfriendType.GIRL_3,
+            GirlfriendType.RANDOM
+        )
         val items = gfTypes.map { it.displayName }.toTypedArray()
 
         AlertDialog.Builder(this)
-                .setTitle("選擇你的女友")
-                .setItems(items) { _, which ->
-                    val chosenType = gfTypes[which]
-                    showLoadingAnimation("newConversation")
-                    val intent = Intent(this, ChatActivity::class.java)
-                    // 以字串方式傳遞 enum 的 name
-                    intent.putExtra("EXTRA_GIRLFRIEND_TYPE", chosenType.name)
-                    startActivity(intent)
+            .setTitle("選擇你的女友")
+            .setItems(items) { _, which ->
+                val chosenType = if (which == 3) {
+                    // RANDOM
+                    GirlfriendType.pickRandomGirlfriend()
+                } else {
+                    gfTypes[which]
                 }
-                .show()
+                // Go to loading screen for animation
+                val loadingIntent = Intent(this, loading::class.java)
+                loadingIntent.putExtra("target_activity", "newConversation")
+                loadingIntent.putExtra("EXTRA_GIRLFRIEND_TYPE", chosenType.name)
+                startActivity(loadingIntent)
+            }
+            .show()
     }
 
     private fun showHistoryDialog(histories: List<ChatHistory>) {
         val dialog = Dialog(this)
         dialog.setContentView(R.layout.fragment_chat_history)
 
-        val recyclerView =
-                dialog.findViewById<androidx.recyclerview.widget.RecyclerView>(R.id.rvChatHistory)
+        val recyclerView = dialog.findViewById<RecyclerView>(R.id.rvChatHistory)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        val adapter =
-                ChatHistoryAdapter(
-                        histories = histories,
-                        onHistoryClick = { history ->
-                            showLoadingAnimation("continueConversation", history.id)
-                        },
-                        onDeleteClick = { history ->
-                            ChatHistoryManager(this).deleteChat(history.id)
-                            dialog.dismiss()
-                            showHistoryDialog(ChatHistoryManager(this).getAllChats())
-                        }
-                )
+        val adapter = ChatHistoryAdapter(
+            histories = histories,
+            onHistoryClick = { history ->
+                // Go to loading screen for animation, continuing conversation
+                showLoadingAnimation("continueConversation", history.id)
+                dialog.dismiss()
+            },
+            onDeleteClick = { history ->
+                ChatHistoryManager(this).deleteChat(history.id)
+                dialog.dismiss()
+                showHistoryDialog(ChatHistoryManager(this).getAllChats())
+            }
+        )
 
         recyclerView.adapter = adapter
         dialog.show()
@@ -90,4 +96,3 @@ class HomeActivity : AppCompatActivity() {
         startActivity(loadingIntent)
     }
 }
-
