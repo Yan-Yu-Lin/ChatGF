@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.airbnb.lottie.LottieAnimationView
@@ -29,7 +30,8 @@ class loading : AppCompatActivity() {
                     finish()
                 }
             }
-        }, 5000) // 5秒後跳轉
+
+        }, 2000) // 2秒後跳轉
     }
 
     private fun navigateToNewConversation() {
