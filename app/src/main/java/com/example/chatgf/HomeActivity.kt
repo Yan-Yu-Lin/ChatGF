@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -65,28 +66,31 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun showHistoryDialog(histories: List<ChatHistory>) {
-        val dialog = Dialog(this)
-        dialog.setContentView(R.layout.fragment_chat_history)
+        try {
+            val dialog = Dialog(this)
+            dialog.setContentView(R.layout.fragment_chat_history)
+            val recyclerView = dialog.findViewById<RecyclerView>(R.id.rvChatHistory)
+            recyclerView.layoutManager = LinearLayoutManager(this)
 
-        val recyclerView = dialog.findViewById<RecyclerView>(R.id.rvChatHistory)
-        recyclerView.layoutManager = LinearLayoutManager(this)
+            val adapter = ChatHistoryAdapter(
+                histories = histories,
+                onHistoryClick = { history ->
+                    showLoadingAnimation("continueConversation", history.id)
+                },
+                onDeleteClick = { history ->
+                    ChatHistoryManager(this).deleteChat(history.id)
+                    dialog.dismiss()
+                    showHistoryDialog(ChatHistoryManager(this).getAllChats())
+                }
+            )
 
-        val adapter = ChatHistoryAdapter(
-            histories = histories,
-            onHistoryClick = { history ->
-                // Go to loading screen for animation, continuing conversation
-                showLoadingAnimation("continueConversation", history.id)
-                dialog.dismiss()
-            },
-            onDeleteClick = { history ->
-                ChatHistoryManager(this).deleteChat(history.id)
-                dialog.dismiss()
-                showHistoryDialog(ChatHistoryManager(this).getAllChats())
-            }
-        )
 
-        recyclerView.adapter = adapter
-        dialog.show()
+            recyclerView.adapter = adapter
+            dialog.show()
+        } catch (e: Exception) {
+            Log.e("HomeActivity", "Error showing history dialog: ${e.message}")
+            Toast.makeText(this, "顯示歷史記錄時出錯", Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun showLoadingAnimation(targetActivity: String, chatId: String? = null) {
