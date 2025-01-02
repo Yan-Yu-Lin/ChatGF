@@ -22,15 +22,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textStyle="bold"
-                    android:textSize="24sp"
-                    android:fontFamily="@font/chenyu"/>
+                    android:textSize="18sp"/>
 
             <TextView
                     android:id="@+id/tvLastMessage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="20sp"
-                    android:fontFamily="@font/chenyu"
+                    android:textSize="16sp"
                     android:maxLines="1"
                     android:ellipsize="end"/>
         </LinearLayout>

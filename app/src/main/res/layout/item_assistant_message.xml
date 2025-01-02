@@ -12,7 +12,6 @@
         android:layout_height="wrap_content"
         android:background="@android:color/holo_green_light"
         android:padding="8dp"
-        android:textSize="22sp"
-        android:textColor="@android:color/white"
-        android:fontFamily="@font/chenyu"/>
+        android:textSize="16sp"
+        android:textColor="@android:color/white"/>
 </LinearLayout>

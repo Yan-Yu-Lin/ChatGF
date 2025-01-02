@@ -51,7 +51,6 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:hint="輸入訊息"
-                    android:fontFamily="@font/chenyu"
                     android:padding="8dp"
                     android:background="@drawable/edit_text_background" />
 
@@ -59,10 +58,9 @@
                     android:id="@+id/btnSend"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="18sp"
+                    android:textSize="14sp"
                     android:text="送出"
                     android:textColor="#FFFFFF"
-                    android:fontFamily="@font/chenyu"
                     android:layout_marginStart="8dp"
                     android:background="@drawable/rounded_button_background" />
         </LinearLayout>
