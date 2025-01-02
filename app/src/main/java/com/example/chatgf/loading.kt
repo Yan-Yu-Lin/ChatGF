@@ -31,7 +31,7 @@ class loading : AppCompatActivity() {
                 }
             }
 
-        }, 2000) // 2秒後跳轉
+        }, 1000) // 2秒後跳轉
     }
 
     private fun navigateToNewConversation() {
