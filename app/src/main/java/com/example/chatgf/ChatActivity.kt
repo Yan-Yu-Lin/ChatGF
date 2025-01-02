@@ -266,7 +266,8 @@ class ChatActivity : AppCompatActivity() {
 
     override fun onPause() {
         super.onPause()
-        if (messages.isNotEmpty()) {
+        // Only save if there are non-system messages
+        if (messages.any { it.role != "system" }) {
             chatHistoryManager.saveChat(messages, currentChatId)
         }
     }
