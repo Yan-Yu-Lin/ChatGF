@@ -1,5 +1,6 @@
 package com.example.chatgf
 
+import android.app.Dialog
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
@@ -96,25 +97,23 @@ class ChatActivity : AppCompatActivity() {
     }
 
     private fun showGirlfriendSelectionDialog() {
-        val gfTypes = listOf(
-            GirlfriendType.GIRL_1,
-            GirlfriendType.GIRL_2,
-            GirlfriendType.GIRL_3,
-            GirlfriendType.RANDOM
-        )
-        val items = gfTypes.map { it.displayName }.toTypedArray()
+        val dialog = Dialog(this)
+        dialog.setContentView(R.layout.dialog_girlfriend_selection)
 
-        AlertDialog.Builder(this)
-            .setTitle("選擇你的女友")
-            .setItems(items) { _, which ->
-                val chosenType = if (which == 3) {
-                    GirlfriendType.pickRandomGirlfriend()
-                } else {
-                    gfTypes[which]
-                }
-                startNewChat(chosenType)
+        val gfTypes = listOf(GirlfriendType.GIRL_1, GirlfriendType.GIRL_2, GirlfriendType.GIRL_3, GirlfriendType.RANDOM)
+        val recyclerView = dialog.findViewById<RecyclerView>(R.id.rvGirlfriends)
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.adapter = GirlfriendSelectionAdapter(gfTypes) { selectedType ->
+            val chosenType = if (selectedType == GirlfriendType.RANDOM) {
+                GirlfriendType.pickRandomGirlfriend()
+            } else {
+                selectedType
             }
-            .show()
+            startNewChat(chosenType)
+            dialog.dismiss()
+        }
+
+        dialog.show()
     }
 
     private fun updateHistoryList() {

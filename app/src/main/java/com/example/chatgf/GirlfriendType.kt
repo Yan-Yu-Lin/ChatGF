@@ -171,23 +171,28 @@ object SystemPrompts {
 
 enum class GirlfriendType(
     val displayName: String,
-    val systemPrompt: String
+    val systemPrompt: String,
+    val avatarResId: Int
 ) {
     GIRL_1(
         displayName = "Emma",
-        systemPrompt = SystemPrompts.EMMA_PROMPT
+        systemPrompt = SystemPrompts.EMMA_PROMPT,
+        avatarResId = R.drawable.emma_avatar_crop
     ),
     GIRL_2(
         displayName = "Aria",
-        systemPrompt = SystemPrompts.ARIA_PROMPT
+        systemPrompt = SystemPrompts.ARIA_PROMPT,
+        avatarResId = R.drawable.aria_avatar
     ),
     GIRL_3(
         displayName = "Luna",
-        systemPrompt = SystemPrompts.LUNA_PROMPT
+        systemPrompt = SystemPrompts.LUNA_PROMPT,
+        avatarResId = R.drawable.luna_avatar_crop
     ),
     RANDOM(
         displayName = "Random",
-        systemPrompt = "" // This will be handled by pickRandomGirlfriend()
+        systemPrompt = "",
+        avatarResId = R.drawable.random_avatar // Default avatar
     );
 
     companion object {
