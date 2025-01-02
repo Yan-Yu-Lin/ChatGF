@@ -16,6 +16,7 @@ import com.aallam.openai.api.chat.ChatRole
 import kotlinx.coroutines.launch
 import androidx.recyclerview.widget.DividerItemDecoration
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 
 public val EXTRA_CHAT_ID = "chat_id"
 
@@ -65,7 +66,7 @@ class ChatActivity : AppCompatActivity() {
             // 設置側邊欄的新對話按鈕
             val btnNewChat = findViewById<Button>(R.id.btnNewChatInDrawer)
             btnNewChat.setOnClickListener {
-                startNewChat()
+                showGirlfriendSelectionDialog()
             }
 
             // 設置歷史記錄列表
@@ -77,6 +78,28 @@ class ChatActivity : AppCompatActivity() {
             Log.e("ChatActivity", "Error in setupDrawer: ${e.message}")
             Toast.makeText(this, "設置側邊欄時出錯", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun showGirlfriendSelectionDialog() {
+        val gfTypes = listOf(
+            GirlfriendType.GIRL_1,
+            GirlfriendType.GIRL_2,
+            GirlfriendType.GIRL_3,
+            GirlfriendType.RANDOM
+        )
+        val items = gfTypes.map { it.displayName }.toTypedArray()
+
+        AlertDialog.Builder(this)
+            .setTitle("選擇你的女友")
+            .setItems(items) { _, which ->
+                val chosenType = if (which == 3) {
+                    GirlfriendType.pickRandomGirlfriend()
+                } else {
+                    gfTypes[which]
+                }
+                startNewChat(chosenType)
+            }
+            .show()
     }
 
     private fun updateHistoryList() {
@@ -133,9 +156,7 @@ class ChatActivity : AppCompatActivity() {
         }
     }
 
-
-
-    private fun startNewChat() {
+    private fun startNewChat(girlfriendType: GirlfriendType? = null) {
         // 保存當前對話
         if (messages.isNotEmpty()) {
             chatHistoryManager.saveChat(messages, currentChatId)
@@ -146,6 +167,11 @@ class ChatActivity : AppCompatActivity() {
         adapter.notifyDataSetChanged()
         currentChatId = null
         drawerLayout.closeDrawer(GravityCompat.START)
+
+        girlfriendType?.let {
+            messages.add(Message(role = "system", content = it.systemPrompt))
+            adapter.notifyDataSetChanged()
+        }
     }
 
     private fun switchToChat(chatId: String) {
