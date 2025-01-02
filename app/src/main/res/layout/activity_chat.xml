@@ -6,19 +6,23 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+    <!-- Background image -->
+    <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
     <ImageView
             android:id="@+id/backgroundImage"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop" />
 
-    <!-- 主要內容 -->
+    <!-- Main content -->
     <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-        <!-- Toolbar -->
         <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
@@ -28,15 +32,12 @@
                 app:navigationIcon="@drawable/ic_menu"
                 app:title="ChatGF" />
 
-        <!-- 原有的聊天內容 -->
-        <!-- 聊天紀錄的 RecyclerView -->
         <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_alignParentTop="true"
-                android:layout_marginBottom="16dp"
-                android:layout_above="@id/inputLayout" />
+                android:layout_weight="1"
+                android:layout_marginBottom="16dp" />
 
         <LinearLayout
                 android:layout_width="match_parent"
@@ -64,8 +65,9 @@
                     android:background="@drawable/rounded_button_background" />
         </LinearLayout>
     </LinearLayout>
+    </FrameLayout>
 
-    <!-- 側邊選單 -->
+    <!-- Navigation drawer -->
     <com.google.android.material.navigation.NavigationView
             android:id="@+id/navigationView"
             android:layout_width="280dp"
@@ -74,12 +76,10 @@
             android:background="@android:color/white">
 
         <LinearLayout
-                android:id="@+id/inputLayout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="8dp"
-                android:layout_alignParentBottom="true">
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="8dp">
 
             <Button
                     android:id="@+id/btnNewChatInDrawer"
@@ -100,7 +100,6 @@
                     android:layout_height="0dp"
                     android:layout_weight="1"/>
         </LinearLayout>
-
     </com.google.android.material.navigation.NavigationView>
 
 </androidx.drawerlayout.widget.DrawerLayout>

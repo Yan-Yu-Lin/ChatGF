@@ -48,7 +48,7 @@ class ChatActivity : AppCompatActivity() {
             "winter" -> R.drawable.winter  // winter.jpg
             else -> R.drawable.spring // 默認背景
         }
-
+        findViewById<ImageView>(R.id.backgroundImage).setImageResource(backgroundRes)
 
         // 1. 優先初始化 chatHistoryManager
         chatHistoryManager = ChatHistoryManager(this)
