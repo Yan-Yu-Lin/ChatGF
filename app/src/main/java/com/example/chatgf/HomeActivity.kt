@@ -39,30 +39,27 @@ class HomeActivity : AppCompatActivity() {
 
     /** 顯示選擇女友的對話框 */
     private fun showGirlfriendSelectionDialog() {
-        val gfTypes = listOf(
-            GirlfriendType.GIRL_1,
-            GirlfriendType.GIRL_2,
-            GirlfriendType.GIRL_3,
-            GirlfriendType.RANDOM
-        )
-        val items = gfTypes.map { it.displayName }.toTypedArray()
+        val dialog = Dialog(this)
+        dialog.setContentView(R.layout.dialog_girlfriend_selection)
 
-        AlertDialog.Builder(this)
-            .setTitle("選擇你的女友")
-            .setItems(items) { _, which ->
-                val chosenType = if (which == 3) {
-                    // RANDOM
-                    GirlfriendType.pickRandomGirlfriend()
-                } else {
-                    gfTypes[which]
-                }
-                // Go to loading screen for animation
-                val loadingIntent = Intent(this, loading::class.java)
-                loadingIntent.putExtra("target_activity", "newConversation")
-                loadingIntent.putExtra("EXTRA_GIRLFRIEND_TYPE", chosenType.name)
-                startActivity(loadingIntent)
+        val gfTypes = listOf(GirlfriendType.GIRL_1, GirlfriendType.GIRL_2, GirlfriendType.GIRL_3, GirlfriendType.RANDOM)
+        val recyclerView = dialog.findViewById<RecyclerView>(R.id.rvGirlfriends)
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.adapter = GirlfriendSelectionAdapter(gfTypes) { selectedType ->
+            val chosenType = if (selectedType == GirlfriendType.RANDOM) {
+                GirlfriendType.pickRandomGirlfriend()
+            } else {
+                selectedType
             }
-            .show()
+            // Different handling for HomeActivity
+            val loadingIntent = Intent(this, loading::class.java)
+            loadingIntent.putExtra("target_activity", "newConversation")
+            loadingIntent.putExtra("EXTRA_GIRLFRIEND_TYPE", chosenType.name)
+            startActivity(loadingIntent)
+            dialog.dismiss()
+        }
+
+        dialog.show()
     }
 
     private fun showHistoryDialog(histories: List<ChatHistory>) {
