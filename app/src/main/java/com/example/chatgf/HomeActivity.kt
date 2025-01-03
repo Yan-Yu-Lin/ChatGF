@@ -51,10 +51,10 @@ class HomeActivity : AppCompatActivity() {
             } else {
                 selectedType
             }
-            // Different handling for HomeActivity
+            // Pass girlfriend type to loading activity
             val loadingIntent = Intent(this, loading::class.java)
             loadingIntent.putExtra("target_activity", "newConversation")
-            loadingIntent.putExtra("EXTRA_GIRLFRIEND_TYPE", chosenType.name)
+            loadingIntent.putExtra("EXTRA_GIRLFRIEND_TYPE", chosenType.name)  // Add this line
             startActivity(loadingIntent)
             dialog.dismiss()
         }
