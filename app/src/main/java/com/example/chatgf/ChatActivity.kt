@@ -204,7 +204,13 @@ class ChatActivity : AppCompatActivity() {
     }
 
     private fun loadCurrentChat() {
-        // 從 intent 獲取對話 ID（如果有的話）
+        // Check for girlfriend type from intent
+        intent.getStringExtra("EXTRA_GIRLFRIEND_TYPE")?.let { gfTypeName ->
+            val girlfriendType = GirlfriendType.valueOf(gfTypeName)
+            startNewChat(girlfriendType)
+        }
+
+        // Existing chat loading code...
         intent.getStringExtra(EXTRA_CHAT_ID)?.let { chatId ->
             currentChatId = chatId
             chatHistoryManager.getChatById(chatId)?.let { history ->
