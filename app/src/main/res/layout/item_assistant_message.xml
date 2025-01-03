@@ -10,8 +10,10 @@
         android:id="@+id/tvAssistantMessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@android:color/holo_green_light"
+        android:background="@drawable/assistant_gradient"
         android:padding="8dp"
-        android:textSize="16sp"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:fontFamily="@font/chenyu"
         android:textColor="@android:color/white"/>
 </LinearLayout>
