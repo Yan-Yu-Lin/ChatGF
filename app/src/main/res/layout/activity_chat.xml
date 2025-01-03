@@ -52,14 +52,19 @@
                     android:layout_weight="1"
                     android:hint="輸入訊息"
                     android:padding="8dp"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/chenyu"
                     android:background="@drawable/edit_text_background" />
 
             <Button
                     android:id="@+id/btnSend"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="14sp"
+                    android:textSize="18sp"
                     android:text="送出"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/chenyu"
                     android:textColor="#FFFFFF"
                     android:layout_marginStart="8dp"
                     android:background="@drawable/rounded_button_background" />
