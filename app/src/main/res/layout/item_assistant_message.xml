@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/assistant_gradient"
         android:padding="8dp"
-        android:textSize="24sp"
+        android:textSize="30sp"
         android:textStyle="bold"
         android:fontFamily="@font/chenyu"
         android:textColor="@android:color/white"/>

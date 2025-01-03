@@ -1,0 +1,25 @@
+fd07cfe,RayGur,raygur0101@gmail.com,2025-01-02 02:30:36 +0800,fix:side history display and error handling
+8f1433b,RayGur,raygur0101@gmail.com,2024-12-31 19:17:42 +0800,still working...
+a565c4b,RayGur,raygur0101@gmail.com,2024-12-31 01:05:09 +0800,feat:sidelist but no respond
+63598cb,RayGur,raygur0101@gmail.com,2025-01-02 03:49:27 +0800,fix:agp version
+0412227,Yan-Yu-Lin,arthur.lin.0906@gmail.com,2024-12-31 20:56:52 +0800,Fixing system prompt not being applied when starting a new chat or continuing with previous session
+6f260ee,Yan-Yu-Lin,arthur.lin.0906@gmail.com,2024-12-31 19:23:26 +0800,Merge branch 'girlfriends_profile'
+4f2f1cb,Yan-Yu-Lin,arthur.lin.0906@gmail.com,2024-12-31 18:57:22 +0800,Creating three AI girlfriend's profiles
+7cbde10,Yan-Yu-Lin,arthur.lin.0906@gmail.com,2024-12-31 17:43:02 +0800,Stop tracking .idea directory
+2b8d32b,Yan-Yu-Lin,arthur.lin.0906@gmail.com,2024-12-31 17:41:09 +0800,Ignore Idea directory
+c670416,Yan Yu Lin,119659563+Yan-Yu-Lin@users.noreply.github.com,2024-12-31 17:35:54 +0800,Merge pull request #3 from Yan-Yu-Lin/anime
+145a35f,Yan-Yu-Lin,arthur.lin.0906@gmail.com,2024-12-31 17:35:19 +0800,Ignore Idea directory
+8a54694,Xiaohe425,ascv22355@gmail.com,2024-12-31 16:49:50 +0800,loading anime merge
+2ed2214,Yan-Yu-Lin,arthur.lin.0906@gmail.com,2024-12-31 16:26:53 +0800,Girlfriend Profile Added
+f3e845b,Xiaohe425,ascv22355@gmail.com,2024-12-31 16:07:27 +0800,loading anime
+d63734f,Xiaohe425,ascv22355@gmail.com,2024-12-31 00:48:58 +0800,justsave
+20b5a0b,RayGur,96278539+RayGur@users.noreply.github.com,2024-12-31 00:43:52 +0800,Merge pull request #2 from Yan-Yu-Lin/feat/history
+c71405b,RayGur,raygur0101@gmail.com,2024-12-31 00:08:15 +0800,feat:no history toast
+e39a72a,RayGur,raygur0101@gmail.com,2024-12-31 00:02:11 +0800,fix:carry on the prev history
+9107a39,RayGur,raygur0101@gmail.com,2024-12-30 23:49:23 +0800,feat:chat history stored
+47b2188,RayGur,96278539+RayGur@users.noreply.github.com,2024-12-30 21:18:31 +0800,Merge pull request #1 from Yan-Yu-Lin/feat/SecreteAPI
+4c82c4a,Raygur,gurray0101@gmial.com,2024-12-29 22:10:27 +0800,fix: move API key to environment variables for security
+25a8571,Yan-Yu-Lin,arthur.lin.0906@gmail.com,2024-12-29 18:35:32 +0800,Memorize & Recall
+6959c41,Yan-Yu-Lin,arthur.lin.0906@gmail.com,2024-12-29 17:51:03 +0800,Half GirlFriend
+1a1cd7c,Yan-Yu-Lin,arthur.lin.0906@gmail.com,2024-12-29 17:29:08 +0800,Edit Android Manifest
+669bb38,Yan-Yu-Lin,arthur.lin.0906@gmail.com,2024-12-29 17:18:44 +0800,init commit
